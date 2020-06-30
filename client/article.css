@@ -1,0 +1,157 @@
+.article-container {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 0);
+    width: 680px;
+    min-height: calc(100vh - 200px);
+    padding: 125px 60px 60px 60px;
+    background-color: white;
+    text-align: left;
+}
+
+.forum-title {
+    display: inline-block;
+    font-size: 2.4rem;
+    border-bottom: 1px solid;
+}
+
+.forum-title:hover {
+    cursor: pointer;
+    background-color: #f2f2f2;
+}
+
+.article-main {
+    margin-top: 30px;
+}
+
+.article-title {
+    display: flex;
+    border-bottom: 2px solid;
+    border-color: #2e4361;
+    font-size: 2rem;
+}
+
+.article-info {
+    margin-top: 15px;
+    font-size: 1.4rem;
+}
+
+.article-info-date {
+    margin-left: 10px;
+    color: gray;
+}
+
+.gg-time {
+    display: inline-block;
+    --ggs: 0.8;
+}
+
+.article-description {
+    margin-top: 20px;
+    padding-bottom: 30px;
+    border-bottom: 1px solid;
+    border-color: #f2f2f2;
+    font-weight: 100;
+    font-size: 1.6rem;
+    word-break: break-all;
+}
+
+.comments {
+    margin-top: 30px;
+}
+
+.comments-count {
+    font-size: 1.8rem;
+}
+
+.comment {
+    font-size: 1.4rem;
+    margin-top: 10px;
+}
+
+.comment:not(:last-child) {
+    margin-bottom: 30px auto;
+}
+ 
+.reply {
+    margin-left: 30px;
+}
+
+.comment-info {
+    background-color: #d8d8d8;
+    border-radius: 8px;
+    padding: 3px 8px 3px 8px;
+}
+
+.comment-info::after {
+    content: '';
+    display: block;
+    clear: both;
+}
+
+.comment-author {
+    float: left;
+}
+
+.comment-date {
+    float: right;
+}
+
+.comment-actions {
+    text-align: right;
+}
+
+.action-button {
+    transition: color ease-in-out 0.2s;
+}
+
+.action-button:hover {
+    cursor: pointer;
+    color: skyblue;
+}
+
+.comment-text {
+    word-break: break-all;
+    padding: 3px 8px 3px 8px;
+}
+
+.write-comment {
+    display: flow-root;
+    margin-top: 30px;
+    background-color: #f2f2f2;
+}
+
+.write-comment-item {
+    margin: 25px 0 15px 0;
+    text-align: center;
+}
+
+.write-comment-item:last-child {
+    margin-top: 0;
+}
+
+.write-comment-text {
+    width: 60%;
+    height: 120px;
+    font: inherit;
+    font-size: 1.4rem;
+    color: inherit;
+    resize: none;
+    border-color: #d8d8d8;
+}
+
+button {
+    width: 70px;
+    height: 30px;
+    color: #f2f2f2;
+    background-color: #2e4361; 
+    border: none;
+    border-radius: 1px;
+    font-size:  1.3rem;
+    font-family: inherit;
+    box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.19);
+}
+
+button:hover {
+    cursor: pointer;
+}

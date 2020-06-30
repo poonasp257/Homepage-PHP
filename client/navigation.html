@@ -1,0 +1,77 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <link href="navigation.css" rel="stylesheet">
+        <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+        <style>
+            a {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: inherit;
+                text-decoration: none;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="navigation">
+            <a 
+                class="navigation-item" 
+                id="navigation-home"
+                href="home.html"                
+            >
+                홈으로
+            </a>            
+            <a 
+                class="navigation-item" 
+                id="navigation-sign-up"
+                href="signup.html"               
+            >
+                회원가입
+            </a>
+            <a 
+                class="navigation-item" 
+                id="navigation-sign-in"
+                href="signin.html"                 
+            >
+                로그인
+            </a>
+            <a 
+                class="navigation-item" 
+                id="navigation-sign-out"            
+            >
+                로그아웃
+            </a>
+        </div>
+        <script>
+            document.getElementById('navigation-sign-out').addEventListener(
+                'click', () => $.ajax({
+                    type: 'POST',
+                    dataType: "json",
+                    url: "../server/signout.php",
+                    data: {},
+                    success: (data) => {
+                        if (data['error'] != 'no') {
+                            window.alert(data['error']);
+                            return;
+                        }
+                        
+                        sessionStorage.setItem('isLoggedIn', false);
+                    }
+                })
+            );
+            
+            if (sessionStorage.getItem("isLoggedIn")) {
+                $("#navigation-sign-up").hide();
+                $("#navigation-sign-in").hide();
+                $("#navigation-sign-out").show();
+            }
+            else {
+                $("#navigation-sign-up").show();
+                $("#navigation-sign-in").show();
+                $("#navigation-sign-out").hide();
+            }
+        </script>
+    </body>
+</html>

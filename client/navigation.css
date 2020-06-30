@@ -1,0 +1,25 @@
+.navigation {
+    z-index: 1;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    text-align: right;
+    padding-right: 60px;
+    box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.19);
+    background-color: white;
+}
+
+.navigation-item { 
+    margin: 12px 45px 12px 12px;
+    font-size: 1.7rem;
+    font-weight: 500;
+    transition: color ease-in-out 0.2s;
+}
+
+.navigation-item:hover {
+    cursor: pointer;
+    color: skyblue;
+}

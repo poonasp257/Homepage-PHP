@@ -1,0 +1,41 @@
+.forum-list {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 0);
+    min-height: calc(100vh - 200px);
+    padding: 100px;
+    background-color: white;
+}
+
+.forum:not(:last-child) {
+    position: relative;
+    margin-bottom: 100px;
+}
+
+.forum-title {
+    display: inline-block;
+    border-bottom: 1px solid;
+    font-size: 2rem;
+}
+
+.forum-title:hover {
+    cursor: pointer;
+    background-color: #f2f2f2;
+}
+
+.forum-article-list {
+    width: 600px;
+    margin-top: 30px;
+}
+
+.forum-article {
+    padding: 10px 0 10px 0;
+    border-bottom: 1px solid;
+    border-color: #f2f2f2;
+    font-size: 1.4rem;
+}
+
+.forum-article:hover {
+    cursor: pointer;
+    background-color: #f2f2f2;
+}
