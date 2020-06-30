@@ -57,20 +57,20 @@
                             return;
                         }
                         
-                        sessionStorage.setItem('isLoggedIn', false);
+                        //sessionStorage.setItem('isLoggedIn', false);
+                        sessionStorage.clear();
+
+                        location.reload();
                     }
                 })
             );
             
-            if (sessionStorage.getItem("isLoggedIn")) {
-                $("#navigation-sign-up").hide();
-                $("#navigation-sign-in").hide();
-                $("#navigation-sign-out").show();
+            if (sessionStorage.getItem("isLoggedIn") == 'true') {
+                $("#navigation-sign-up").remove();
+                $("#navigation-sign-in").remove();
             }
             else {
-                $("#navigation-sign-up").show();
-                $("#navigation-sign-in").show();
-                $("#navigation-sign-out").hide();
+                $("#navigation-sign-out").remove();
             }
         </script>
     </body>

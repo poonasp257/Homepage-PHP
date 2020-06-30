@@ -18,8 +18,36 @@
         <script>
             $("#nav-placeholder").load("navigation.html");
             $("#input-form").load("input_form.html", () => {
+                $("#nickname").parent().remove();
+
                 document.getElementById("form-title").innerHTML="로그인";
                 document.getElementById("form-button").innerHTML="로그인 하기";
+
+                $("#form-button").on('click', () => {
+                    const userId = document.getElementById("userid").value;
+                    const password = document.getElementById("password").value;
+
+                    if (userId == '' || password == '') {
+                        window.alert("양식에 맞게 모두 입력해주세요.");
+                        return;
+                    }
+
+                    $.ajax({
+                        type: 'POST',
+                        dataType: "json",
+                        url: "../server/signin.php",
+                        data: { userId, password },
+                        success: (data) => {
+                            if (data['error'] != 'no') {
+                                window.alert(data['error']);
+                                return;
+                            }
+                            
+                            sessionStorage.setItem("isLoggedIn", true);
+                            location.href="home.html";
+                        }
+                    });
+                });
             });
         </script>
     </body>

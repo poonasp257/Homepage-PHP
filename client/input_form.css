@@ -42,7 +42,6 @@ input:-webkit-autofill:active {
     top: 50%;
     transform: translate(-50%, -50%);   
     width: 300px;
-    height: 300px;
     padding: 30px;
     border-radius: 5px;
     box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);

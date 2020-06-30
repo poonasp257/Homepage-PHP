@@ -1,37 +1,48 @@
 <?php
-	header("Content-Type: application/json; charset=utf-8'");
-	$response = [ "error" => "no" ];
+header("Content-Type: application/json; charset=utf-8'");
 
-	session_start();
+session_start();
 
-	$userid = $json["userinfo"]["userid"];
-	$passwd = $json["userinfo"]["password"];
+$response = [ "error" => "no" ];
+$userId = $_REQUEST["userId"];
+$password = $_REQUEST["password"];
 
-	$_SESSION["userid"] = null;
-
-	$mysqli = new mysqli("127.0.0.1", "test1", "bitnami", "project_db", 3307);
-
-	$sql = "select account_id, userid, name from UserAccounts where userid='" . $userid . "' and passwd=sha2('" . $passwd . "', 224)";
-	$result = $mysqli->query($sql);
-	if ($result == null) {
-		$response['error'] = 'query error';
-		echo json_encode($response);
-		exit;
-	}
- 
-	$n_rows = $result->num_rows;
-	if ($n_rows == 1) {
-		$obj = $result->fetch_object();
-		$_SESSION["account_id"] = $obj->account_id;
-		$_SESSION["userid"] = $obj->userid;
-		$_SESSION["name"] = $obj->name;
-	}
-	else {
-		$response["error"] = "not registered or not matched password.";
-	}
-
-	$result->free();
-	$mysqli->close();
-
+if (!isset($userId) || $userId == ""
+	|| !isset($password) || $password == "") {
+	$response['error'] = "아이디 혹은 비밀번호를 입력해주세요.";
 	echo json_encode($response);
+	exit;
+}
+
+$mysqli = new mysqli("127.0.0.1", "test1", "bitnami", "project_db", 3306);
+if ($mysqli->connect_errno) {
+	$response['error'] = "Failed to connect to MySQL: " . $mysqli -> connect_error;
+	echo json_encode($response);
+	exit;
+}
+
+$query = "select account_id, nickname, userid from Accounts 
+	where userid='$userId' and passwd=sha2('$password', 224)";
+$result = $mysqli->query($query);
+if ($result == null) {
+	$response['error'] = 'search account query error';
+	echo json_encode($response);
+	exit;
+}
+
+$n_rows = $result->num_rows;
+if ($n_rows > 0) {
+	$obj = $result->fetch_object();
+	$_SESSION["account_id"] = $obj->account_id;
+	$_SESSION["nickname"] = $obj->nickname;
+	$_SESSION["userid"] = $obj->userid;
+}
+else {
+	$response["error"] = "not registered or not matched password.";
+}
+
+$result->free();
+$mysqli->close();
+
+echo json_encode($response);
 ?>

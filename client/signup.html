@@ -23,20 +23,27 @@
                 document.getElementById("form-button").innerHTML="가입 하기";
               
                 $("#form-button").on('click', () => {
+                    const nickname = document.getElementById("nickname").value;
                     const userId = document.getElementById("userid").value;
                     const password = document.getElementById("password").value;
+
+                    if (nickname == '' || userId == '' || password == '') {
+                        window.alert("양식에 맞게 모두 입력해주세요.");
+                        return;
+                    }
 
                     $.ajax({
                         type: 'POST',
                         dataType: "json",
                         url: "../server/signup.php",
-                        data: { userId, password },
+                        data: { nickname, userId, password },
                         success: (data) => {
                             if (data['error'] != 'no') {
                                 window.alert(data['error']);
                                 return;
                             }
-                            
+        
+                            window.alert("입력하신 아이디로 로그인 해주세요.");
                             location.href="home.html";
                         }
                     });
