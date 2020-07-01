@@ -32,6 +32,10 @@
                     </span>
                 </div>
                 <div id="post-text"> </div>
+                <div id="post-actions">
+                    <button id="modify-post">수정</button>
+                    <button id="delete-post">삭제</button>
+                </div>
             </div>
             <div id="comments">
                 <span id="comments-count">댓글 0개</span>                
@@ -78,17 +82,14 @@
             });
 
             function createCommentElement(comment) {
-                const { comment_id, author, created_date, parent_comment_id, text } = comment;
+                const { comment_id, author, created_date, parent_comment_id, text, is_displayed } = comment;
                 const containerClasName = parent_comment_id ? "comment reply" : "comment";
-                const replyButton = (
-                    `<div class="comment-actions">
-                            <button class="action-button">답글</span>
-                    </div>
-                    <div class="reply-container">
+                const replyContainer = (
+                    `<div class="reply-container">
                         <textarea class="reply-text"></textarea> 
                         <div class="action-buttons">
-                            <button class="action-button">등록</span>
-                            <button class="action-button">취소</span>
+                            <button class="action-button">등록</button>
+                            <button class="action-button">취소</button>
                         </div>
                     </div>`
                 );
@@ -99,8 +100,12 @@
                             <span class="comment-author">${author}</span>
                             <span class="comment-date">${getDateTimeStr(created_date)}</span>
                         </div>
-                        <div class="comment-text">${text}</div>
-                        ${parent_comment_id ? '' : replyButton}
+                        <div class="comment-text">${is_displayed == '0'  ? '삭제된 댓글입니다.' : text}</div>
+                        <div class="comment-actions">
+                            <button class="action-button">삭제</button>
+                            ${parent_comment_id ? '' : '<button class="action-button">답글</button>'}
+                        </div>
+                        ${parent_comment_id ? '' : replyContainer}
                     </div>`
                 );
             } 
@@ -122,9 +127,44 @@
                             return;
                         }
 
+                        if (post['is_displayed'] == '0') {
+                            location.href = 'home.html';
+                            return;
+                        }
+                        
+                        if (post['author_account_id'] != sessionStorage.getItem("account_id")) {
+                            $("#modify-post").remove();
+                        }
+
+                        if ((sessionStorage.getItem("account_type") != '0')
+                            && post['author_account_id'] != sessionStorage.getItem("account_id")) {
+                            $("#delete-post").remove();
+                        }
+
                         $("#post-container").show();
 
-                        const { forum_type, title, author, created_date, text } = post;
+                        const { post_id, author_account_id, 
+                        forum_type, title, author, created_date, text } = post;
+
+                        $("#delete-post").on('click', () => {
+                            if (!window.confirm("삭제하시겠습니까?")) return;
+
+                            $.ajax({
+                                type: 'POST',
+                                dataType: "json",
+                                url: "../server/delete_post.php",
+                                data: { postId: post_id, author_account_id },
+                                success: (data) => {
+                                    if (data['error'] != 'no') {
+                                        window.alert("서버가 원활하지 않은 상태입니다.");
+                                        return;
+                                    }
+
+                                    location.reload();
+                                }
+                            });
+                        });
+
                         const forumTypeNames = {
                             "0": "공지사항",
                             "1": "자유게시판"
@@ -163,7 +203,7 @@
                             replyContainer.hide();
 
                             const actions = actionsContainer.children();
-                            const replyButton = actions.first();
+                            const replyButton = actions.last();
                             replyButton.click(() => {
                                 $('.reply-container:visible').hide();
 
@@ -210,7 +250,34 @@
                                         location.reload();                                        
                                     }
                                 });
-                            });            
+                            });
+
+                            const deleteButton = actions.first();
+                            if ((sessionStorage.getItem("account_id") != comment['author_account_id'])
+                                && (sessionStorage.getItem("account_type") != '0')
+                                || comment['is_displayed'] == '0') {
+                                deleteButton.remove();
+                                return;
+                            }
+
+                            deleteButton.click(() => {
+                                if (!window.confirm("삭제하시겠습니까?")) return;
+
+                                $.ajax({
+                                    type: 'POST',
+                                    dataType: "json",
+                                    url: "../server/delete_comment.php",
+                                    data: { comment_id, author_account_id: comment['author_account_id'] },
+                                    success: (data) => {
+                                        if (data['error'] != 'no') {
+                                            window.alert("서버가 원활하지 않은 상태입니다.");
+                                            return;
+                                        }
+
+                                        location.reload();
+                                    }
+                                });
+                            });                                        
                         });     
                  
                         if (sessionStorage.getItem("isLoggedIn") != 'true') {

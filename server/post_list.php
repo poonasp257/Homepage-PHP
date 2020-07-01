@@ -15,7 +15,7 @@ if ($mysqli->connect_errno) {
 	exit;
 }
 
-$query = "select count(*) as count from Post where forum_type='$forumType'";
+$query = "select count(*) as count from Post where forum_type='$forumType' and is_displayed = TRUE";
 $result = $mysqli->query($query);
 if ($result == null) {
 	$response['error'] = 'get all posts query error';
@@ -33,7 +33,7 @@ $response['numOfPages'] = $numOfPages;
 
 $startIndex = ($pageNumber - 1) * $maxNumOfPosts;
 
-$query = "select post_id, author, title, created_date from Post
+$query = "select post_id, author, title, created_date, is_displayed from Post
 	where forum_type='$forumType' order by post_id desc limit $startIndex, $maxNumOfPosts";
 $result = $mysqli->query($query);
 if ($result == null) {
@@ -45,6 +45,8 @@ if ($result == null) {
 $response['postList'] = array();
 
 while($row = $result->fetch_assoc()) {
+	if ($row['is_displayed'] == '0') continue;
+
     $response['postList'][] = $row;
 }
 

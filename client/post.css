@@ -56,6 +56,8 @@ textarea {
 
 #post-main {
     margin-top: 30px;
+    border-bottom: 1px solid;
+    border-color: #f2f2f2;
 }
 
 #post-title {
@@ -83,15 +85,18 @@ textarea {
 #post-text {
     margin-top: 20px;
     padding-bottom: 30px;
-    border-bottom: 1px solid;
-    border-color: #f2f2f2;
     font-weight: 100;
     font-size: 1.6rem;
     word-break: break-all;
 }
 
+#post-actions {
+    margin: 15px auto;
+    text-align: right;
+}
+
 #comments {
-    margin-top: 30px;
+    margin-top: 20px;
 }
 
 #comments-count {

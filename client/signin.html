@@ -38,12 +38,13 @@
                         url: "../server/signin.php",
                         data: { userId, password },
                         success: (data) => {
-                            const { account_type, error } = data;
+                            const { account_id, account_type, error } = data;
                             if (error != 'no') {
                                 window.alert(data['error']);
                                 return;
                             }
                             
+                            sessionStorage.setItem("account_id", account_id);
                             sessionStorage.setItem("account_type", account_type);
                             sessionStorage.setItem("isLoggedIn", true);
 

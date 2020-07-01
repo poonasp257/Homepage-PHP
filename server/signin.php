@@ -38,6 +38,7 @@ if ($n_rows > 0) {
 	$_SESSION["nickname"] = $obj->nickname;
 	$_SESSION["userid"] = $obj->userid;
 
+	$response["account_id"] = $obj->account_id;
 	$response["account_type"] = $obj->account_type;
 }
 else {

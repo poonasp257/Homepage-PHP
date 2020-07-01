@@ -15,8 +15,10 @@ if ($mysqli->connect_errno) {
 
 $maxNumOfPosts = 5;
 
-$query = "(select post_id, forum_type, title from Post where forum_type='0' order by post_id desc limit $maxNumOfPosts)
-    union all (select post_id, forum_type, title from Post where forum_type='1' order by post_id desc limit $maxNumOfPosts)";
+$query = "(select post_id, forum_type, title, is_displayed from Post 
+	where forum_type='0' and is_displayed=TRUE order by post_id desc limit $maxNumOfPosts)
+	union all (select post_id, forum_type, title, is_displayed from Post 
+		where forum_type='1' and is_displayed=TRUE order by post_id desc limit $maxNumOfPosts)";
 $result = $mysqli->query($query);
 if ($result == null) {
 	$response['error'] = 'get all posts query error';
@@ -27,6 +29,8 @@ if ($result == null) {
 $response['postList'] = array();
 
 while($row = $result->fetch_assoc()) {
+	if ($row['is_displayed'] == '0') continue;
+
     $response['postList'][] = $row;
 }
 
