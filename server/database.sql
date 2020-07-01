@@ -44,3 +44,174 @@ CREATE TABLE Comment (
 
 insert into Account(account_type, nickname, userid, passwd) 
 	values(0, '관리자', 'admin', sha2('test', 224));
+
+insert into Post(forum_type, author_account_id, author, title, text) 
+    values(0, 1, 'hello', 'Test', 'hello world');
+insert into Post(forum_type, author_account_id, author, title, text) 
+    values(0, 1, 'hello', 'Test', 'hello world');
+insert into Post(forum_type, author_account_id, author, title, text) 
+    values(0, 1, 'hello', 'Test', 'hello world');
+insert into Post(forum_type, author_account_id, author, title, text) 
+    values(0, 1, 'hello', 'Test', 'hello world');
+
+insert into Post(forum_type, author_account_id, author, title, text) 
+    values(1, 1, 'hello', 'Test', 'hello world');
+insert into Post(forum_type, author_account_id, author, title, text) 
+    values(1, 1, 'hello', 'Test', 'hello world');
+insert into Post(forum_type, author_account_id, author, title, text) 
+    values(1, 1, 'hello', 'Test', 'hello world');
+insert into Post(forum_type, author_account_id, author, title, text) 
+    values(1, 1, 'hello', 'Test', 'hello world');
+
+insert into Post(forum_type, author_account_id, author, title, text) 
+    values(1, 1, 'hello', 'Test', 'hello world');
+insert into Post(forum_type, author_account_id, author, title, text) 
+    values(1, 1, 'hello', 'Test', 'hello world');
+insert into Post(forum_type, author_account_id, author, title, text) 
+    values(1, 1, 'hello', 'Test', 'hello world');
+insert into Post(forum_type, author_account_id, author, title, text) 
+    values(1, 1, 'hello', 'Test', 'hello world');
+
+insert into Post(forum_type, author_account_id, author, title, text) 
+    values(1, 1, 'hello', 'Test', 'hello world');
+insert into Post(forum_type, author_account_id, author, title, text) 
+    values(1, 1, 'hello', 'Test', 'hello world');
+insert into Post(forum_type, author_account_id, author, title, text) 
+    values(1, 1, 'hello', 'Test', 'hello world');
+insert into Post(forum_type, author_account_id, author, title, text) 
+    values(1, 1, 'hello', 'Test', 'hello world');
+
+insert into Post(forum_type, author_account_id, author, title, text) 
+    values(1, 1, 'hello', 'Test', 'hello world');
+insert into Post(forum_type, author_account_id, author, title, text) 
+    values(1, 1, 'hello', 'Test', 'hello world');
+insert into Post(forum_type, author_account_id, author, title, text) 
+    values(1, 1, 'hello', 'Test', 'hello world');
+insert into Post(forum_type, author_account_id, author, title, text) 
+    values(1, 1, 'hello', 'Test', 'hello world');
+
+insert into Post(forum_type, author_account_id, author, title, text) 
+    values(1, 1, 'hello', 'Test', 'hello world');
+insert into Post(forum_type, author_account_id, author, title, text) 
+    values(1, 1, 'hello', 'Test', 'hello world');
+insert into Post(forum_type, author_account_id, author, title, text) 
+    values(1, 1, 'hello', 'Test', 'hello world');
+insert into Post(forum_type, author_account_id, author, title, text) 
+    values(1, 1, 'hello', 'Test', 'hello world');
+
+insert into Post(forum_type, author_account_id, author, title, text) 
+    values(1, 1, 'hello', 'Test', 'hello world');
+insert into Post(forum_type, author_account_id, author, title, text) 
+    values(1, 1, 'hello', 'Test', 'hello world');
+insert into Post(forum_type, author_account_id, author, title, text) 
+    values(1, 1, 'hello', 'Test', 'hello world');
+insert into Post(forum_type, author_account_id, author, title, text) 
+    values(1, 1, 'hello', 'Test', 'hello world');
+
+insert into Post(forum_type, author_account_id, author, title, text) 
+    values(1, 1, 'hello', 'Test', 'hello world');
+insert into Post(forum_type, author_account_id, author, title, text) 
+    values(1, 1, 'hello', 'Test', 'hello world');
+insert into Post(forum_type, author_account_id, author, title, text) 
+    values(1, 1, 'hello', 'Test', 'hello world');
+insert into Post(forum_type, author_account_id, author, title, text) 
+    values(1, 1, 'hello', 'Test', 'hello world');
+
+insert into Post(forum_type, author_account_id, author, title, text) 
+    values(1, 1, 'hello', 'Test', 'hello world');
+insert into Post(forum_type, author_account_id, author, title, text) 
+    values(1, 1, 'hello', 'Test', 'hello world');
+insert into Post(forum_type, author_account_id, author, title, text) 
+    values(1, 1, 'hello', 'Test', 'hello world');
+insert into Post(forum_type, author_account_id, author, title, text) 
+    values(1, 1, 'hello', 'Test', 'hello world');
+
+insert into Post(forum_type, author_account_id, author, title, text) 
+    values(1, 1, 'hello', 'Test', 'hello world');
+insert into Post(forum_type, author_account_id, author, title, text) 
+    values(1, 1, 'hello', 'Test', 'hello world');
+insert into Post(forum_type, author_account_id, author, title, text) 
+    values(1, 1, 'hello', 'Test', 'hello world');
+insert into Post(forum_type, author_account_id, author, title, text) 
+    values(1, 1, 'hello', 'Test', 'hello world');
+
+insert into Post(forum_type, author_account_id, author, title, text) 
+    values(1, 1, 'hello', 'Test', 'hello world');
+insert into Post(forum_type, author_account_id, author, title, text) 
+    values(1, 1, 'hello', 'Test', 'hello world');
+insert into Post(forum_type, author_account_id, author, title, text) 
+    values(1, 1, 'hello', 'Test', 'hello world');
+insert into Post(forum_type, author_account_id, author, title, text) 
+    values(1, 1, 'hello', 'Test', 'hello world');
+
+insert into Post(forum_type, author_account_id, author, title, text) 
+    values(1, 1, 'hello', 'Test', 'hello world');
+insert into Post(forum_type, author_account_id, author, title, text) 
+    values(1, 1, 'hello', 'Test', 'hello world');
+insert into Post(forum_type, author_account_id, author, title, text) 
+    values(1, 1, 'hello', 'Test', 'hello world');
+insert into Post(forum_type, author_account_id, author, title, text) 
+    values(1, 1, 'hello', 'Test', 'hello world');
+
+insert into Post(forum_type, author_account_id, author, title, text) 
+    values(1, 1, 'hello', 'Test', 'hello world');
+insert into Post(forum_type, author_account_id, author, title, text) 
+    values(1, 1, 'hello', 'Test', 'hello world');
+insert into Post(forum_type, author_account_id, author, title, text) 
+    values(1, 1, 'hello', 'Test', 'hello world');
+insert into Post(forum_type, author_account_id, author, title, text) 
+    values(1, 1, 'hello', 'Test', 'hello world');
+
+insert into Post(forum_type, author_account_id, author, title, text) 
+    values(1, 1, 'hello', 'Test', 'hello world');
+insert into Post(forum_type, author_account_id, author, title, text) 
+    values(1, 1, 'hello', 'Test', 'hello world');
+insert into Post(forum_type, author_account_id, author, title, text) 
+    values(1, 1, 'hello', 'Test', 'hello world');
+insert into Post(forum_type, author_account_id, author, title, text) 
+    values(1, 1, 'hello', 'Test', 'hello world');
+
+insert into Post(forum_type, author_account_id, author, title, text) 
+    values(1, 1, 'hello', 'Test', 'hello world');
+insert into Post(forum_type, author_account_id, author, title, text) 
+    values(1, 1, 'hello', 'Test', 'hello world');
+insert into Post(forum_type, author_account_id, author, title, text) 
+    values(1, 1, 'hello', 'Test', 'hello world');
+insert into Post(forum_type, author_account_id, author, title, text) 
+    values(1, 1, 'hello', 'Test', 'hello world');
+
+insert into Post(forum_type, author_account_id, author, title, text) 
+    values(1, 1, 'hello', 'Test', 'hello world');
+insert into Post(forum_type, author_account_id, author, title, text) 
+    values(1, 1, 'hello', 'Test', 'hello world');
+insert into Post(forum_type, author_account_id, author, title, text) 
+    values(1, 1, 'hello', 'Test', 'hello world');
+insert into Post(forum_type, author_account_id, author, title, text) 
+    values(1, 1, 'hello', 'Test', 'hello world');
+
+insert into Post(forum_type, author_account_id, author, title, text) 
+    values(1, 1, 'hello', 'Test', 'hello world');
+insert into Post(forum_type, author_account_id, author, title, text) 
+    values(1, 1, 'hello', 'Test', 'hello world');
+insert into Post(forum_type, author_account_id, author, title, text) 
+    values(1, 1, 'hello', 'Test', 'hello world');
+insert into Post(forum_type, author_account_id, author, title, text) 
+    values(1, 1, 'hello', 'Test', 'hello world');
+
+insert into Post(forum_type, author_account_id, author, title, text) 
+    values(1, 1, 'hello', 'Test', 'hello world');
+insert into Post(forum_type, author_account_id, author, title, text) 
+    values(1, 1, 'hello', 'Test', 'hello world');
+insert into Post(forum_type, author_account_id, author, title, text) 
+    values(1, 1, 'hello', 'Test', 'hello world');
+insert into Post(forum_type, author_account_id, author, title, text) 
+    values(1, 1, 'hello', 'Test', 'hello world');
+
+insert into Post(forum_type, author_account_id, author, title, text) 
+    values(1, 1, 'hello', 'Test', 'hello world');
+insert into Post(forum_type, author_account_id, author, title, text) 
+    values(1, 1, 'hello', 'Test', 'hello world');
+insert into Post(forum_type, author_account_id, author, title, text) 
+    values(1, 1, 'hello', 'Test', 'hello world');
+insert into Post(forum_type, author_account_id, author, title, text) 
+    values(1, 1, 'hello', 'Test', 'hello world');

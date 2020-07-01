@@ -7,6 +7,7 @@ session_start();
 $response = [ "error" => "no" ];
 $forumType = $_REQUEST["forumType"];
 $pageNumber = $_REQUEST["pageNumber"];
+$keyword = $_REQUEST["keyword"];
 
 $mysqli = new mysqli("127.0.0.1", "test1", "bitnami", "project_db", 3306);
 if ($mysqli->connect_errno) {
@@ -15,7 +16,10 @@ if ($mysqli->connect_errno) {
 	exit;
 }
 
-$query = "select count(*) as count from Post where forum_type='$forumType' and is_displayed = TRUE";
+$keyword_condition = $keyword ? "and title like '%$keyword%'" : '';
+
+$query = "select count(*) as count from Post 
+	where forum_type='$forumType' and is_displayed = TRUE $keyword_condition";
 $result = $mysqli->query($query);
 if ($result == null) {
 	$response['error'] = 'get all posts query error';
@@ -34,7 +38,8 @@ $response['numOfPages'] = $numOfPages;
 $startIndex = ($pageNumber - 1) * $maxNumOfPosts;
 
 $query = "select post_id, author, title, created_date, is_displayed from Post
-	where forum_type='$forumType' order by post_id desc limit $startIndex, $maxNumOfPosts";
+	where forum_type='$forumType' $keyword_condition
+	order by post_id desc limit $startIndex, $maxNumOfPosts";
 $result = $mysqli->query($query);
 if ($result == null) {
 	$response['error'] = 'get all posts query error';

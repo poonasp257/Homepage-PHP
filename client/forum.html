@@ -21,7 +21,11 @@
         <div id="nav-placeholder">
         </div>
         <div id="forum-container"> 
-            <a id="forum-title" onclick="location.href=this"></a>
+            <a id="forum-title"></a>
+            <div id="search-container">
+                <a class="gg-search" id="search"></a>
+                <input id="search-keyword" placeholder="검색">
+            </div>
             <div class="category-list">
                 <span class="category-title">제목</span>
                 <span class="category-author">글쓴이</span>
@@ -41,6 +45,16 @@
             $("#nav-placeholder").load("navigation.html");
             $("#forum-container").hide();
 
+            $("#search").on('click', () => {
+                const keyword = $("#search-keyword").val();
+                if (keyword == '') {
+                    window.alert("검색어를 입력해주세요.");
+                    return;
+                }
+
+                setUrlParameter('keyword', keyword);
+            });
+
             const forumTypeNames = {
                 "0": "공지사항",
                 "1": "자유게시판"
@@ -58,7 +72,8 @@
                 $("#write-post").remove();
             }
 
-            document.getElementById("forum-title").innerHTML = forumTypeNames[forumType];
+            $("#forum-title").html(forumTypeNames[forumType]);
+            $("#forum-title").attr("href", `forum.html?type=${forumType}&page=1`);
 
             const numOfPagesPerOneTime = 5;
             const currentPageNumber = getUrlParameter('page');
@@ -70,7 +85,11 @@
                     type: 'POST',
                     dataType: "json",
                     url: "../server/post_list.php",
-                    data: { forumType, pageNumber: currentPageNumber },
+                    data: { 
+                        forumType, 
+                        pageNumber: currentPageNumber,
+                        keyword: getUrlParameter('keyword') 
+                    },
                     success: (data) => {
                         const { numOfPages, postList, error } = data;
                         if (error != 'no') {

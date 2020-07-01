@@ -16,6 +16,12 @@ function setUrlParameter(parameterName, value) {
     let urlParameters = location.search.substring(1).split('&');
     let newUrl = location.pathname + '?';
 
+    if(location.search.search(parameterName) < 0) {
+        newUrl = location.href + "&" + parameterName + '=' + value;
+        location.href = newUrl;
+        return;
+    }
+
     for (let i = 0; i < urlParameters.length; ++i) {
         const parameter = urlParameters[i].split('=');
         if (parameter[0] == parameterName) {
