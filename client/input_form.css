@@ -26,16 +26,6 @@ input {
     box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.19);
 }
 
-input:-webkit-autofill,
-input:-webkit-autofill:hover, 
-input:-webkit-autofill:focus, 
-input:-webkit-autofill:active {
-    border: inherit;
-    -webkit-text-fill-color: inherit;
-    font-size: inherit;
-    font-family: inherit;
-}
-
 .container {
     position: absolute;
     left: 50%;
@@ -48,7 +38,7 @@ input:-webkit-autofill:active {
     text-align: center;
 }
 
-.title {
+#form-title {
     font-size: 2.8rem;
     font-weight: 500;
     margin-bottom: 50px;

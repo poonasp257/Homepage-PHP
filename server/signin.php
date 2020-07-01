@@ -21,7 +21,7 @@ if ($mysqli->connect_errno) {
 	exit;
 }
 
-$query = "select account_id, nickname, userid from Accounts 
+$query = "select account_id, account_type, nickname, userid from Account 
 	where userid='$userId' and passwd=sha2('$password', 224)";
 $result = $mysqli->query($query);
 if ($result == null) {
@@ -34,11 +34,14 @@ $n_rows = $result->num_rows;
 if ($n_rows > 0) {
 	$obj = $result->fetch_object();
 	$_SESSION["account_id"] = $obj->account_id;
+	$_SESSION["account_type"] = $obj->account_type;
 	$_SESSION["nickname"] = $obj->nickname;
 	$_SESSION["userid"] = $obj->userid;
+
+	$response["account_type"] = $obj->account_type;
 }
 else {
-	$response["error"] = "not registered or not matched password.";
+	$response["error"] = "아이디 혹은 비밀번호가 일치하지 않습니다.";
 }
 
 $result->free();

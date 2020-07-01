@@ -33,7 +33,7 @@ if ($mysqli->connect_errno) {
 	exit;
 }
 
-$query = "select * from Accounts where nickname='$nickname'";
+$query = "select * from Account where nickname='$nickname'";
 $result = $mysqli->query($query);
 if ($result == null) {
 	$response['query'] = $query;
@@ -43,7 +43,7 @@ if ($result == null) {
 }
 
 $n_rows = $result->num_rows;
-$result->close();
+$result->free();
 
 if ($n_rows > 0) {
 	$response['error'] = "이미 존재하는 닉네임입니다.";
@@ -51,7 +51,7 @@ if ($n_rows > 0) {
 	exit;
 }
 
-$query = "select * from Accounts where userid='$userId'";
+$query = "select * from Account where userid='$userId'";
 $result = $mysqli->query($query);
 if ($result == null) {
 	$response['error'] = "userid search query error";
@@ -60,7 +60,7 @@ if ($result == null) {
 }
 
 $n_rows = $result->num_rows;
-$result->close();
+$result->free();
 
 if ($n_rows > 0) {
 	$response['error'] = "이미 존재하는 아이디입니다.";
@@ -68,7 +68,7 @@ if ($n_rows > 0) {
 	exit;
 }
 
-$query = "insert into Accounts(nickname, userid, passwd) values('$nickname', '$userId', sha2('$password', 224))";
+$query = "insert into Account(nickname, userid, passwd) values('$nickname', '$userId', sha2('$password', 224))";
 $result = $mysqli->query($query);
 if ($result == null) {
 	$response['error'] = "create account query error";

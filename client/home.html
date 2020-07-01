@@ -13,35 +13,59 @@
         <link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap" rel="stylesheet">
         <link href="home_forum.css" rel="stylesheet">
         <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+        <script type="text/javascript" src="util.js"></script>
     </head>
     <body>
         <div id="nav-placeholder">
         </div>
-        <div class="forum-list">
+        <div id="forum-list">
             <div class="forum">
                 <div class="forum-title">
-                    <a href="forum.html?type=0">공지사항</a>
+                    <a href="forum.html?type=0&page=1">공지사항</a>
                 </div>
-                <div class="forum-article-list">
-                    <div class="forum-article">6월 29일(월) 서비스 정기정검 안내</div>
-                    <div class="forum-article">4월 24일(금) 서비스 정기정검 안내</div>
-                    <div class="forum-article">3월 12일 임시점검 안내(완료)</div>
+                <div class="forum-post-list" id="forum_0">
+
                 </div>
-            </div>
+            </div>            
             <div class="forum">
                 <div class="forum-title">
-                    <a href="forum.html?type=1">자유 게시판</a>
+                    <a href="forum.html?type=1&page=1">자유 게시판</a>
                 </div>
-                <div class="forum-article-list">
-                    <div class="forum-article">사냥터 어디를 가면 좋을까요?</div>
-                    <div class="forum-article">직업 추천 좀</div>
-                    <div class="forum-article">뭐가 좋음</div>
-                    <div class="forum-article">치킨 먹고 싶다</div>
+                <div class="forum-post-list" id="forum_1">
+                    
                 </div>
             </div>            
         </div>
         <script>
             $("#nav-placeholder").load("navigation.html");
+
+            $("#forum-list").hide();
+            
+            $.ajax({
+                    type: 'POST',
+                    dataType: "json",
+                    url: "../server/preview_forums.php",
+                    data: {},
+                    success: (data) => {
+                        if (data['error'] != 'no') {
+                            window.alert("서버가 원활하지 않은 상태입니다.");
+                            return;
+                        }
+            
+                        $("#forum-list").show();
+
+                        const postList = data['postList'];
+                        postList.map((post) => {
+                            const postElem = createNewElement('div', 'forum-post', post['title']);
+                            postElem.addEventListener('click', () => {
+                                location.href = `post.html?id=${post['post_id']}`;
+                            });
+
+                            const forum = document.getElementById(`forum_${post['forum_type']}`);
+                            forum.appendChild(postElem);
+                        });
+                    }
+                });
         </script>
     </body>
 </html>

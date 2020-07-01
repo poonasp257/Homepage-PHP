@@ -1,4 +1,4 @@
-.forum-list {
+#forum-list {
     position: absolute;
     left: 50%;
     transform: translate(-50%, 0);
@@ -23,19 +23,19 @@
     background-color: #f2f2f2;
 }
 
-.forum-article-list {
+.forum-post-list {
     width: 600px;
     margin-top: 30px;
 }
 
-.forum-article {
+.forum-post {
     padding: 10px 0 10px 0;
     border-bottom: 1px solid;
     border-color: #f2f2f2;
     font-size: 1.4rem;
 }
 
-.forum-article:hover {
+.forum-post:hover {
     cursor: pointer;
     background-color: #f2f2f2;
 }

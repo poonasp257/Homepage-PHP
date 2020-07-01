@@ -1,0 +1,223 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Heroes</title>
+        <style>
+            body { 
+                margin: 0 auto; 
+                font-family: 'Nanum Pen Script', cursive;
+                background-color: #f2f2f2;
+                overflow-y: auto;
+            }
+        </style>
+        <link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap" rel="stylesheet">
+        <link href='https://css.gg/css' rel='stylesheet'>
+        <link href="post.css" rel="stylesheet">
+        <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+        <script type="text/javascript" src="util.js"></script>
+    </head>
+    <body>
+        <div id="nav-placeholder">
+        </div>
+        <div id="post-container"> 
+            <a id="forum-title"> </a>
+            <div id="post-main">
+                <span id="post-title"> </span>
+                <div class="post-info">
+                    <span id="post-author"> </span>
+                    <span class="post-info-date">
+                        <i class="gg-time"></i>
+                        <span id="post-date"> </span>
+                    </span>
+                </div>
+                <div id="post-text"> </div>
+            </div>
+            <div id="comments">
+                <span id="comments-count">댓글 0개</span>                
+                <div id="write-comment-container">
+                    <div class="write-comment-item">
+                        <textarea 
+                            id="write-comment-text" 
+                            maxlength="10000" 
+                            placeholder="내용을 입력해주세요."
+                        ></textarea>
+                    </div>
+                    <div class="write-comment-item">
+                        <button id="write-comment">등록</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            $("#nav-placeholder").load("navigation.html");
+            $("#post-container").hide();
+
+            $("#write-comment").on('click', () => {
+                const text = $("#write-comment-text").val();
+                if (text == '') {
+                    window.alert("내용을 입력해주세요.");
+                    return;
+                } 
+
+                $.ajax({
+                    type: 'POST',
+                    dataType: "json",
+                    url: "../server/write_comment.php",
+                    data: { text, postId: getUrlParameter('id') },
+                    success: (data) => {
+                        console.log(data);
+                        if (data['error'] != 'no') {
+                            window.alert("서버가 원활하지 않은 상태입니다.");
+                            return;
+                        }
+
+                        location.reload();
+                    }
+                });
+            });
+
+            function createCommentElement(comment) {
+                const { comment_id, author, created_date, parent_comment_id, text } = comment;
+                const containerClasName = parent_comment_id ? "comment reply" : "comment";
+                const replyButton = (
+                    `<div class="comment-actions">
+                            <button class="action-button">답글</span>
+                    </div>
+                    <div class="reply-container">
+                        <textarea class="reply-text"></textarea> 
+                        <div class="action-buttons">
+                            <button class="action-button">등록</span>
+                            <button class="action-button">취소</span>
+                        </div>
+                    </div>`
+                );
+
+                return (
+                    `<div class="${containerClasName}" id="comment_${comment_id}">
+                        <div class="comment-info">
+                            <span class="comment-author">${author}</span>
+                            <span class="comment-date">${getDateTimeStr(created_date)}</span>
+                        </div>
+                        <div class="comment-text">${text}</div>
+                        ${parent_comment_id ? '' : replyButton}
+                    </div>`
+                );
+            } 
+
+            $.ajax({
+                    type: 'POST',
+                    dataType: "json",
+                    url: "../server/post.php",
+                    data: { postId: getUrlParameter('id') },
+                    success: (data) => {
+                        const { post, comments, error } = data;
+                        if (error != 'no') {
+                            window.alert("서버가 원활하지 않은 상태입니다.");
+                            return;
+                        }
+                        
+                        if (post == null) {
+                            location.href = '404.html';
+                            return;
+                        }
+
+                        $("#post-container").show();
+
+                        const { forum_type, title, author, created_date, text } = post;
+                        const forumTypeNames = {
+                            "0": "공지사항",
+                            "1": "자유게시판"
+                        };
+                        const forumTitle = document.getElementById("forum-title");
+                        forumTitle.innerHTML = forumTypeNames[forum_type];
+                        forumTitle.href = `forum.html?type=${forum_type}&page=1`;
+
+                        document.getElementById("post-title").innerHTML = title;
+                        document.getElementById("post-date").innerHTML = getDateTimeStr(created_date);
+                        document.getElementById("post-author").innerHTML = author;
+                        document.getElementById("post-text").innerHTML = text;
+
+                        if (!comments) return;
+
+                        document.getElementById("comments-count").innerHTML = `댓글 ${comments.length}개`;
+
+                        comments.map((comment) => {
+                            const { comment_id, parent_comment_id } = comment;
+                            const commentHTML = createCommentElement(comment);
+
+                            if (parent_comment_id) {
+                                $(`#comment_${parent_comment_id}`).append(commentHTML);
+                            }
+                            else $(commentHTML).insertBefore($("#comments").children().last());
+                            
+                            const commentElem = $(`#comment_${comment_id}`);
+                            const replyContainer = commentElem.find(".reply-container");
+                            const actionsContainer = commentElem.find(".comment-actions");
+                            if (!sessionStorage.getItem("isLoggedIn")) {
+                                replyContainer.remove();
+                                actionsContainer.remove();
+                                return;
+                            }
+
+                            replyContainer.hide();
+
+                            const actions = actionsContainer.children();
+                            const replyButton = actions.first();
+                            replyButton.click(() => {
+                                $('.reply-container:visible').hide();
+
+                                actions.hide();
+                                replyContainer.show();
+                            });
+
+                            const replyText = replyContainer.find(".reply-text");
+                            const buttons = replyContainer.find(".action-buttons").children();
+                            const cancelEvent = () => {
+                                replyText.val('');
+                                actions.show();
+                                replyContainer.hide();
+                                $(document).off('click');
+                            };
+
+                            const cancelButton = buttons.last();
+                            $(cancelButton).on('click', () => cancelEvent());
+                            $(document).on('click', (event) => {
+                                if (!$(event.target).parent().is(".reply-container")
+                                    && !$(event.target).is('.action-button')) {
+                                    cancelEvent();
+                                }
+                            });
+
+                            const writeButton = buttons.first();
+                            writeButton.click(() => {
+                                $.ajax({
+                                    type: 'POST',
+                                    dataType: "json",
+                                    url: "../server/write_comment.php",
+                                    data: {
+                                        postId: getUrlParameter('id'),
+                                        parent_comment_id: comment_id,
+                                        text: replyText.val()
+                                    },
+                                    success: (data) => {
+                                        if (data['error'] != 'no') {
+                                            window.alert("서버가 원활하지 않은 상태입니다.");
+                                            return;
+                                        }
+                                        
+                                        cancelEvent();
+                                        location.reload();                                        
+                                    }
+                                });
+                            });            
+                        });     
+                 
+                        if (sessionStorage.getItem("isLoggedIn") != 'true') {
+                            $("#write-comment-container").remove();
+                        }
+                    }   
+                });
+        </script>
+    </body>
+</html>

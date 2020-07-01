@@ -5,22 +5,42 @@ flush privileges;
 
 use project_db;
 
-create table Accounts (
-    account_id bigint not null AUTO_INCREMENT,
-    nickname    varchar(40) not null UNIQUE,  
-    userid    varchar(40) not null UNIQUE,  
-    passwd    char(64) not null,
-    primary key (account_id)
+CREATE TABLE Account (
+    account_id 	BIGINT NOT NULL AUTO_INCREMENT,
+	account_type INT DEFAULT 1, 
+    nickname    VARCHAR(40) NOT NULL UNIQUE,  
+    userid    	VARCHAR(40) NOT NULL UNIQUE,  
+    passwd    	CHAR(64) NOT NULL,
+    PRIMARY KEY (account_id)
 );
 
-create table Comments (
-	comment_id bigint AUTO_INCREMENT,
-	account_id bigint,
-	parent_comment_id bigint DEFAULT NULL, 
-	author varchar(40) not null,
-	`text` nvarchar(100) NOT NULL,
-	is_displayed boolean DEFAULT TRUE,
-	primary key (comment_id),
-	CONSTRAINT c_parent_comment_id FOREIGN KEY(parent_comment_id) REFERENCES Comments(comment_id),
-	CONSTRAINT c_m_account_id FOREIGN KEY(account_id) REFERENCES Accounts(account_id)
+CREATE TABLE Post (
+	post_id 			BIGINT NOT NULL AUTO_INCREMENT,
+	forum_type 			INT NOT NULL,
+	author_account_id 	BIGINT NOT NULL,
+	author 				VARCHAR(40) NOT NULL,
+	title 				VARCHAR(40) NOT NULL,
+	`text`				TEXT NOT NULL, 
+	created_date 		TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	is_displayed 		BOOLEAN DEFAULT TRUE,
+    PRIMARY KEY (post_id),
+	CONSTRAINT c_art_account_id FOREIGN KEY(author_account_id) REFERENCES Account(account_id)
 );
+
+CREATE TABLE Comment (
+	comment_id 			BIGINT NOT NULL AUTO_INCREMENT,
+	post_id		 		BIGINT NOT NULL,
+	parent_comment_id 	BIGINT DEFAULT NULL, 
+	author_account_id 	BIGINT NOT NULL,
+	author 				VARCHAR(40) NOT NULL,
+	`text` 				TEXT NOT NULL,
+	created_date 		TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	is_displayed 		BOOLEAN DEFAULT TRUE,
+    PRIMARY KEY (comment_id),
+	CONSTRAINT c_post_id FOREIGN KEY(post_id) REFERENCES Post(post_id),
+	CONSTRAINT c_com_account_id FOREIGN KEY(author_account_id) REFERENCES Account(account_id),
+	CONSTRAINT c_parent_comment_id FOREIGN KEY(parent_comment_id) REFERENCES Comment(comment_id)
+);
+
+insert into Account(account_type, nickname, userid, passwd) 
+	values(0, '관리자', 'admin', sha2('test', 224));

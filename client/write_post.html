@@ -1,0 +1,75 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Heroes</title>
+        <style>
+            body { 
+                margin: 0 auto; 
+                font-family: 'Nanum Pen Script', cursive;
+                background-color: #f2f2f2;
+                overflow-y: auto;
+            }
+        </style>
+        <link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap" rel="stylesheet">
+        <link href="write_post.css" rel="stylesheet">
+        <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+        <script type="text/javascript" src="util.js"></script>
+    </head>
+    <body>
+        <div id="nav-placeholder">
+        </div>
+        <div id="post-container"> 
+            <a id="forum-title"></a>
+            <input id="post-title" placeholder="제목">
+            <div id="write-post-container">
+                <div class="write-post-item">
+                    <textarea id="post-text" maxlength="10000" placeholder="내용을 입력해주세요."></textarea>
+                </div>
+                <div class="write-post-item">
+                    <button id="write-post">등록</button>
+                </div>
+            </div>
+        </div>
+        <script>
+            $("#nav-placeholder").load("navigation.html");
+            
+            const forumTypeNames = {
+                "0": "공지사항",
+                "1": "자유게시판"
+            };
+            const forumType = getUrlParameter('type');
+            if (forumType === null || forumType < 0 
+                || forumType >= Object.keys(forumTypeNames).length) {
+                location.href = "404.html";
+            }
+            
+            document.getElementById("forum-title").innerHTML = forumTypeNames[forumType];
+
+            $("#write-post").on('click', () =>{ 
+                const title = $("#post-title").val();
+                const text = $("#post-text").val();
+
+                if (title == '' || text == '') {
+                    window.alert("양식에 맞게 모두 입력해주세요.");
+                    return;
+                }
+
+                $.ajax({
+                    type: 'POST',
+                    dataType: "json",
+                    url: "../server/write-post.php",
+                    data: { forumType, title, text },
+                    success: (data) => {
+                        if (data['error'] != 'no') {
+                            window.alert(data['error']);
+                            return;
+                        }
+
+                        location.href = `forum.html?type=${forumType}&page=1`; 
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>

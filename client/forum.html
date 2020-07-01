@@ -15,41 +15,125 @@
         <link href='https://css.gg/css' rel='stylesheet'>
         <link href="forum.css" rel="stylesheet">
         <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+        <script type="text/javascript" src="util.js"></script>
     </head>
     <body>
         <div id="nav-placeholder">
         </div>
-        <div class="container"> 
-            <a class="title" onclick="location.href=this">공지사항</a>
+        <div id="forum-container"> 
+            <a id="forum-title" onclick="location.href=this"></a>
             <div class="category-list">
                 <span class="category-title">제목</span>
                 <span class="category-author">글쓴이</span>
                 <span class="category-date">등록일</span>
             </div>
-            <div class="article-list">
-                <div class="article">
-                    <span class="article-title">6월 29일(월) 서비스 정기정검 안내</span>
-                    <span class="article-author">관리자</span>
-                    <span class="article-date">2020-6-29</span>
-                </div>
-                <div class="article">
-                    <span class="article-title">6월 29일(월) 서비스 정기정검 안내</span>
-                    <span class="article-author">관리자</span>
-                    <span class="article-date">2020-6-29</span>
-                </div>
+            <div id="post-list">
+
+            </div>            
+            <div id="write-post-container">
+                <button id="write-post">글쓰기</button>
             </div>
-            <div class="pagination-container">   
-                <a class="pagination-item gg-chevron-left"></a>
-                <a class="pagination-item page-number">1</a>
-                <a class="pagination-item page-number">2</a>
-                <a class="pagination-item page-number">3</a>
-                <a class="pagination-item page-number">4</a>
-                <a class="pagination-item page-number">5</a>         
-                <a class="pagination-item gg-chevron-right"></a>
+            <div id="pagination-container">   
+
             </div>
         </div>
         <script>
             $("#nav-placeholder").load("navigation.html");
+            $("#forum-container").hide();
+
+            const forumTypeNames = {
+                "0": "공지사항",
+                "1": "자유게시판"
+            };
+            const forumType = getUrlParameter('type');
+            if (forumType === null || forumType < 0 
+                || forumType >= Object.keys(forumTypeNames).length) {
+                location.href = "404.html";
+            }
+
+            $("#write-post").on('click', () => location.href=`write_post.html?type=${forumType}`);
+
+            if ((forumType == 0 && sessionStorage.getItem("account_type") != 0)
+                || !sessionStorage.getItem("isLoggedIn")) {
+                $("#write-post").remove();
+            }
+
+            document.getElementById("forum-title").innerHTML = forumTypeNames[forumType];
+
+            const numOfPagesPerOneTime = 5;
+            const currentPageNumber = getUrlParameter('page');
+            if (currentPageNumber === null || currentPageNumber <= 0) {
+                location.href = "404.html";
+            }
+
+            $.ajax({
+                    type: 'POST',
+                    dataType: "json",
+                    url: "../server/post_list.php",
+                    data: { forumType, pageNumber: currentPageNumber },
+                    success: (data) => {
+                        const { numOfPages, postList, error } = data;
+                        if (error != 'no') {
+                            window.alert("서버가 원활하지 않은 상태입니다.");
+                            return;
+                        }
+
+                        if (currentPageNumber != 1 && currentPageNumber > numOfPages) {
+                            location.href = "404.html";
+                            return;
+                        }
+                        
+                        $("#forum-container").show();
+
+                        const pageContainer = document.getElementById("pagination-container");
+                        const pageStartIdx = numOfPagesPerOneTime * parseInt(currentPageNumber / (numOfPagesPerOneTime + 1));
+                        for (let i = pageStartIdx; i < pageStartIdx + numOfPagesPerOneTime; ++i) {
+                            if (i >= numOfPages) break;
+
+                            let className = 'pagination-item page-number';
+                            if (i + 1 == currentPageNumber) {
+                                className = 'pagination-item page-number active';
+                            }
+                            
+                            const pageElem = createNewElement('a', className, i + 1);
+                            pageElem.addEventListener('click', () => setUrlParameter('page', i + 1));
+                            pageContainer.appendChild(pageElem);
+                        }
+
+                        if (pageStartIdx > 0) {
+                            const prevArrow = createNewElement('a', 'pagination-item gg-chevron-left');
+                            prevArrow.addEventListener('click', () => 
+                                setUrlParameter('page', pageStartIdx)
+                            );
+                            pageContainer.insertBefore(prevArrow, pageContainer.firstChild);
+                        }
+
+                        if (numOfPages - pageStartIdx >= numOfPagesPerOneTime) {
+                            const nextArrow = createNewElement('a', 'pagination-item gg-chevron-right');
+                            nextArrow.addEventListener('click', () => 
+                                setUrlParameter('page', pageStartIdx + numOfPagesPerOneTime + 1)
+                            );
+                            pageContainer.appendChild(nextArrow);
+                        }
+
+                        const postListElem = document.getElementById("post-list");
+                        postList.map(({ post_id, title, author, created_date }) => {
+                            const postElem = createNewElement('div', 'post');
+                            postElem.addEventListener('click', () => {
+                                location.href = `post.html?id=${post_id}`;
+                            });
+                            postListElem.appendChild(postElem);
+
+                            const postInfo = [
+                                createNewElement('div', 'post-title', title),
+                                createNewElement('div', 'post-author', author),
+                                createNewElement('div', 'post-date', getDateTimeStr(created_date))
+                            ];
+                            
+                            postInfo.map((info) => postElem.appendChild(info));
+                        });
+                    }
+                });
         </script>
     </body>
 </html>

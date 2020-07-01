@@ -1,4 +1,4 @@
-.container {
+#forum-container {
     position: absolute;
     left: 50%;
     transform: translate(-50%, 0);
@@ -9,15 +9,15 @@
     text-align: left;
 }
 
-.title {
+#forum-title {
     display: inline-block;
     font-size: 2rem;
     border-bottom: 1px solid;
-    margin-top: 30px;
-    margin-bottom: 40px;
+    margin-top: 50px;
+    margin-bottom: 30px;
 }
 
-.title:hover {
+#forum-title:hover {
     cursor: pointer;
     background-color: #f2f2f2;
 }
@@ -45,7 +45,7 @@
     width: 15%;
 }
 
-.article {
+.post {
     width: 100%;
     display: flex;
     font-size: 1.4rem;
@@ -57,28 +57,49 @@
     font-size: 1.4rem
 }
 
-.article:hover {
+.post:hover {
     cursor: pointer;
     background-color: #f2f2f2;
 }
 
-.article-title {
+.post-title {
     width: 70%;
     text-align: left;
 }
 
-.article-author {
+.post-author {
     width: 15%;
 }
 
-.article-date {
+.post-date {
     width: 15%;
 }
 
-.pagination-container {
+#write-post-container {
+    text-align: right;
+}
+
+#write-post {
+    width: 70px;
+    height: 30px;
+    margin-top: 25px; 
+    border: none;
+    border-radius: 1px;
+    color: #f2f2f2;
+    font-size:  1.3rem;
+    font-family: inherit;
+    box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.19);
+    background-color: #2e4361; 
+}
+
+#write-post:hover {
+    cursor: pointer;
+}
+
+#pagination-container {
     display: flex;
     justify-content: center;
-    margin-top: 60px;
+    margin-top: 40px;
 }
 
 .pagination-item {
@@ -89,6 +110,10 @@
 
 .pagination-item:hover {
     cursor: pointer;
+    background-color: #f2f2f2;
+}
+
+.active {
     background-color: #f2f2f2;
 }
 
